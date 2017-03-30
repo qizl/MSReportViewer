@@ -20,7 +20,7 @@ namespace MSReportViewer
         private void getColsGroupReport()
         {
             LocalReport localReport = new LocalReport();
-            localReport.ReportPath = Path.Combine(Environment.CurrentDirectory, "colsgroup.rdlc");
+            localReport.ReportPath = Path.Combine(Environment.CurrentDirectory, "reports/colsgroup.rdlc");
             localReport.DataSources.Add(new ReportDataSource("Columns", getColsGroupDatas(new string[] { "姓名", "手机", "实发工资金额", "自定义列1", "自定义列2" })));
 
             string mimeType = "Application/octet-stream";
