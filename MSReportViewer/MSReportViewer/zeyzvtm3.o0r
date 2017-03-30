@@ -13,10 +13,7 @@ namespace MSReportViewer
         public void TestMethod1()
         {
             // 1.列组报表
-            //this.getColsGroupReport();
-
-            // 2.行组列表
-            this.getRowsGroupReport();
+            this.getColsGroupReport();
         }
 
         #region ColsGroup Reports
@@ -52,9 +49,8 @@ namespace MSReportViewer
         private void getRowsGroupReport()
         {
             LocalReport localReport = new LocalReport();
-            localReport.ReportPath = Path.Combine(Environment.CurrentDirectory, "reports/rowsgroup.rdlc");
-            localReport.SetParameters(new ReportParameter("Title", "张三的法律维权申请表"));
-            localReport.DataSources.Add(new ReportDataSource("Rows", getRowsGroupDatas(new string[] { "姓名", "手机", "实发工资金额", "自定义列1", "自定义列2" }, new string[] { "张三", "1231231231", "12312", "12.2", "23" })));
+            localReport.ReportPath = Path.Combine(Environment.CurrentDirectory, "reports/colsgroup.rdlc");
+            localReport.DataSources.Add(new ReportDataSource("Columns", getRowsGroupDatas(new string[] { "姓名", "手机", "实发工资金额", "自定义列1", "自定义列2" })));
 
             string mimeType = "Application/octet-stream";
             string encoding = "UTF-8";
@@ -62,18 +58,19 @@ namespace MSReportViewer
             Warning[] warnings;
             string[] streams;
 
-            string deviceInfo = "<DeviceInfo><OutputFormat>WORD</OutputFormat><PageWidth>21cm</PageWidth><PageHeight>29.7cm</PageHeight><MarginTop>0.5in</MarginTop><MarginLeft>1in</MarginLeft><MarginRight>1in</MarginRight><MarginBottom>0.5in</MarginBottom></DeviceInfo>";
-            byte[] renderedBytes = localReport.Render("WORD", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+            string deviceInfo = "<DeviceInfo><OutputFormat>EXCEL</OutputFormat><PageWidth>21cm</PageWidth><PageHeight>29.7cm</PageHeight><MarginTop>0.5in</MarginTop><MarginLeft>1in</MarginLeft><MarginRight>1in</MarginRight><MarginBottom>0.5in</MarginBottom></DeviceInfo>";
+            byte[] renderedBytes = localReport.Render("EXCEL", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
 
-            File.WriteAllBytes(Path.Combine(Environment.CurrentDirectory, new Random().Next() + ".doc"), renderedBytes);
+            File.WriteAllBytes(Path.Combine(Environment.CurrentDirectory, "p.xls"), renderedBytes);
         }
-        private DataTable getRowsGroupDatas(string[] rows, string[] vals)
+        private DataTable getRowsGroupDatas(string[] cols, string[] vals)
         {
             DataTable dt = new DataTable();
             dt.Columns.Add(new DataColumn("Name", typeof(string)));
             dt.Columns.Add(new DataColumn("Describe", typeof(string)));
 
-            for (int i = 0; i < rows.Length; i++) dt.Rows.Add(rows[i], vals[i]);
+            for (int i = 0; i < cols.Length; i++)
+			dt.Rows.Add(cols[i],vals[i]); 
 
             return dt;
         }
